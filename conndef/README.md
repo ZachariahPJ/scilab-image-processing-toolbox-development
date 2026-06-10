@@ -141,8 +141,6 @@ catch
 end
 ```
 
----
-
 **Expected output:** `Error raised correctly`
 
 ---
