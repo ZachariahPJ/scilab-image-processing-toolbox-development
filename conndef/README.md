@@ -145,6 +145,8 @@ end
 
 **Expected output:** `Error raised correctly`
 
+---
+
 ### TC-07 — Rejecting Illegal Type Parameter Keyword Strings
 
 Verifies that input sanitizers block unrecognized string arguments passed into the function framework.
