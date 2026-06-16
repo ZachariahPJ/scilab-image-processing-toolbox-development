@@ -3,6 +3,7 @@
 ## 1. Description
 
 `conndef` is a utility function used to generate binary connectivity masks (structuring elements) for mathematical morphology operations (such as dilation and erosion) and neighborhood processing.
+
 The function acts as a precise Scilab port of Octave's native image packaging toolbox. It supports creating standardized custom pixel neighborhoods across arbitrary spatial dimensions ($N$-dimensions). In accordance with Octave conventions, neighborhood centers are evaluated as %t (True) to ensure the reference pixel is explicitly included within calculated neighborhood boundaries.
 
 ---
