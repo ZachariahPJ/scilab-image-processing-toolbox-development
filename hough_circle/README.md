@@ -22,6 +22,8 @@ accum = hough_circle(bw, r)
 
 Requires the `bwmorph` function.
 
+---
+
 ## 4. Parameters
 
 | Parameter | Type | Required | Description |
