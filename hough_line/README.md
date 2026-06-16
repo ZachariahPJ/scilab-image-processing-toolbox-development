@@ -61,6 +61,8 @@ User calls hough()
 
 If you already have angles in radians in Octave convention, `hough_line` can be called directly without going through `hough`.
 
+---
+
 ## 5. Example Usage
 
 ```scilab
