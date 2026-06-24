@@ -27,7 +27,7 @@ lines = houghlines(BW, theta, rho, peaks, 'FillGap', f, 'MinLength', m)
 ---
 
 ## 3. Dependencies
-Requires the `hough`, `hough_line` and `houghpeaks` function.
+Requires the `isimage`, `isnumeric`, `hough`, `hough_line` and `houghpeaks` functions.
 
 ---
 
