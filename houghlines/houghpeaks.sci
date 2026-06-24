@@ -96,11 +96,3 @@ function peaks = houghpeaks(H, varargin)
         end
     end
 endfunction
-
-function res = isimage(img)
-    res = (type(img) == 1 | type(img) == 4 | type(img) == 8) & (ndims(img) == 2 | ndims(img) == 3);
-endfunction
-
-function res = isnumeric(val)
-    res = (type(val) == 1 | type(val) == 8);
-endfunction
