@@ -5,12 +5,16 @@
 //   exec('hough.sci', -1)
 //   exec('houghpeaks.sci', -1)
 //   exec('houghlines.sci', -1)
+//   exec('isimage.sci', -1)
+//   exec('isnumeric.sci', -1)
 // ============================================================
 
 exec('hough_line.sci', -1);
 exec('hough.sci', -1);
 exec('houghpeaks.sci', -1);
 exec('houghlines.sci', -1);
+exec('isimage.sci', -1);
+exec('isnumeric.sci', -1);
 
 passed = 0;
 failed = 0;
