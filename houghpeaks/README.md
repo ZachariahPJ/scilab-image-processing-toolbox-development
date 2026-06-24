@@ -23,7 +23,7 @@ peaks = houghpeaks(H, numpeaks, 'Threshold', t, 'NHoodSize', [r, c])
 ---
 
 ## 3. Dependencies
-Requires the `hough` and `hough_line` function.
+Requires the `isimage`, `isnumeric`, `hough` and `hough_line` function.
 
 ---
 
