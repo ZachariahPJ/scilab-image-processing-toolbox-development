@@ -33,7 +33,6 @@ The result is rounded to the nearest integer and used to increment the correspon
 | `H` | Matrix (`length(rho) × length(theta_oct)`) | — | **Output.** Hough accumulator. `H(i,k)` is the number of foreground pixels consistent with a line at `rho(i)` and `theta_oct(k)`. |
 | `rho` | Row vector | — | **Output.** Rho axis values in pixels, ranging from `-ceil(D)` to `+ceil(D)` where `D` is the image diagonal length. |
 
-> **Note:** `theta_oct` must be in radians in Octave convention. If you have theta in degrees in MATLAB/Octave convention, convert first with: `theta_oct = (-theta_deg + 90) * (%pi / 180)`
 ---
 
 ## 4. Relationship to `hough`
@@ -83,6 +82,7 @@ theta = [-0.5, 0, 0.5];
 disp("Rho vector size:");
 disp(size(rho));
 ```
+
 **Expected output:**
 ```
 1.   13.
@@ -93,3 +93,105 @@ disp(size(rho));
 2.   1.   1.
 1.   1.   0.
 0.   1.   1.
+```
+
+---
+
+## 6. Test Cases
+
+The following 5 test cases cover accumulator dimensions, geometric correctness, and edge inputs. Load the function before running:
+
+```scilab
+exec('hough_line.sci', -1)
+```
+
+---
+
+### TC-01 — All-Zero Image Gives Zero Accumulator
+
+Verifies that an image with no foreground pixels produces an all-zero accumulator with valid dimensions.
+
+```scilab
+I1 = zeros(5, 5);
+[J1, bins1] = hough_line(I1);
+mprintf("max(J1) = %d\n", max(J1(:)));
+mprintf("bins span: [%d, %d]  size(J): [%d %d]\n", bins1(1), bins1($), size(J1,1), size(J1,2));
+```
+
+**Expected output:** `max(J1) = 0`, bins and accumulator dimensions consistent with a 5×5 image diagonal.
+
+---
+
+### TC-02 — Single Pixel Casts Exactly One Vote Per Theta
+
+Verifies that a single foreground pixel at `(3,3)` casts exactly one vote into one rho-bin for each supplied theta, leaving all other bins at zero.
+
+```scilab
+I2 = zeros(5, 5);
+I2(3, 3) = 1;
+thetas2 = [0; %pi/4; %pi/2];
+[J2, bins2] = hough_line(I2, thetas2);
+mprintf("Total votes: %d\n", sum(J2));
+mprintf("Votes per theta column: %d  %d  %d\n", sum(J2(:,1)), sum(J2(:,2)), sum(J2(:,3)));
+```
+
+**Expected output:** `Total votes: 3`, each column sum equals `1`.
+
+---
+
+### TC-03 — Horizontal Line Concentrates All Votes in One Rho-Bin
+
+Verifies that at `theta = 0`, every pixel in a horizontal row maps to the same rho value, so all votes accumulate in a single bin and all other bins remain zero.
+
+```scilab
+I3 = zeros(7, 7);
+I3(4, :) = 1;
+thetas3 = [0];
+[J3, bins3] = hough_line(I3, thetas3);
+rho_val  = 3;
+bin_idx3 = (rho_val - bins3(1)) + 1;
+mprintf("Votes in expected bin: %d\n", J3(bin_idx3, 1));
+mprintf("Votes elsewhere: %d\n", sum(J3(:)) - J3(bin_idx3, 1));
+```
+
+**Expected output:** `Votes in expected bin: 7`, `Votes elsewhere: 0`.
+
+---
+
+### TC-04 — Default Theta Range Produces Correct Accumulator Dimensions
+
+Verifies that when `theta` is omitted, the output bins vector and accumulator matrix have dimensions consistent with the formula `2·ceil(diag) + 1`, where `diag` is the image diagonal length.
+
+```scilab
+r4 = 10; c4 = 15;
+I4 = zeros(r4, c4);
+[J4, bins4] = hough_line(I4);
+diag_len = sqrt((r4-1)^2 + (c4-1)^2);
+nr_bins_expected = 2*ceil(diag_len) + 1;
+thetas_default = (-%pi/2 : %pi/180 : %pi/2)';
+mprintf("bins length — got: %d expected: %d\n", length(bins4), nr_bins_expected);
+mprintf("accum rows — got: %d expected: %d\n", size(J4,1), nr_bins_expected);
+mprintf("accum cols — got: %d expected: %d\n", size(J4,2), length(thetas_default));
+```
+
+**Expected output:** All three `got` values equal the corresponding `expected` values.
+
+---
+
+### TC-05 — Main Diagonal at θ=π/4 Assigns Each Pixel to a Distinct Bin
+
+Verifies that for a 6×6 main diagonal image at `theta = π/4`, the total vote count equals the number of foreground pixels and no two pixels share the same rho-bin (peak bin count = 1).
+
+```scilab
+n5 = 6;
+I5 = zeros(n5, n5);
+for k = 1:n5
+    I5(k, k) = 1;
+end
+thetas5 = [%pi/4];
+[J5, bins5] = hough_line(I5, thetas5);
+mprintf("Total votes: %d  (expected %d)\n", sum(J5), n5);
+mprintf("Max bin count: %d  (expected 1)\n", max(J5(:)));
+```
+
+**Expected output:** `Total votes: 6`, `Max bin count: 1`.
