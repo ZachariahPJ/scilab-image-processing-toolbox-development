@@ -1,6 +1,6 @@
 function [J, bins] = hough_line(I, thetas)
     
-    [nargin, nargout] = argn();
+    [nargout, nargin] = argn();
     if nargin < 1 | nargin > 2 then
         error("Wrong number of input arguments.");
     end
