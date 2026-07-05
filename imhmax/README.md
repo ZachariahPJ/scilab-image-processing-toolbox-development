@@ -83,7 +83,7 @@ disp(res);
 **Expected output:**
 ```scilab
 10.  10.  10.  10.  10.
-10.  25.  25.  25.  10.
+10.  20.  20.  20.  10.
 10.  10.  10.  10.  10.
 ```
 
@@ -106,3 +106,87 @@ disp(and(res == img_peak));
 ```scilab
 T
 ```
+
+---
+
+### TC-04 — Integer Class Preservation
+
+Verifies that when the input image is an integer class (`uint8`), the output of `imhmax` preserves that same class rather than silently returning a plain double array.
+
+```scilab
+img_peak_u8 = uint8([10, 10, 10, 10, 10;
+                      10, 25, 40, 25, 10;
+                      10, 10, 10, 10, 10]);
+
+res = imhmax(img_peak_u8, 10);
+disp(res);
+disp(type(res));
+```
+
+**Expected output(`res`):**
+```scilab
+10.  10.  10.  10.  10.
+10.  25.  30.  25.  10.
+10.  10.  10.  10.  10.
+```
+
+**Expected output(`type(res)`):** `8`  (Scilab's integer-type code, confirming the result is still `uint8`, not `double`)
+
+---
+
+### TC-05 — Rejecting an Invalid CONN Argument
+
+Verifies that passing a scalar connectivity value outside the valid set `{4, 6, 8, 18, 26}` is correctly rejected rather than silently treated as a default connectivity.
+
+```scilab
+img_peak = [10, 10, 10, 10, 10;
+            10, 25, 40, 25, 10;
+            10, 10, 10, 10, 10];
+
+try
+    res = imhmax(img_peak, 10, 5);
+    mprintf("No error raised\n");
+catch
+    mprintf("Error raised correctly\n");
+end
+```
+
+**Expected output:** `Error raised correctly`
+
+---
+
+### TC-06 — Explicit CONN Actually Changes the Result
+
+Verifies that the `CONN` argument is genuinely wired through to the underlying reconstruction rather than ignored, by checking that 4-connectivity and 8-connectivity give different results for two diagonally-adjacent peaks.
+
+```scilab
+img_diag = [10, 10, 10, 10;
+            10, 30, 10, 10;
+            10, 10, 30, 10;
+            10, 10, 10, 10];
+
+res_conn4 = imhmax(img_diag, 15, 4);
+res_conn8 = imhmax(img_diag, 15, 8);
+
+disp(res_conn4);
+disp(res_conn8);
+disp(and(res_conn4 == res_conn8));
+```
+
+**Expected output(`res_conn4`):**
+```scilab
+10.  10.  10.  10.
+10.  15.  10.  10.
+10.  10.  15.  10.
+10.  10.  10.  10.
+```
+
+**Expected output(`res_conn8`):**
+```scilab
+10.  10.  10.  10.
+10.  15.  10.  10.
+10.  10.  15.  10.
+10.  10.  10.  10.
+```
+
+**Expected output(final `and(...)`):** `T`

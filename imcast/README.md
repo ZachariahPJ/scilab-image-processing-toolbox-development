@@ -23,7 +23,7 @@ imout = imcast(img, outcls, 'indexed')
 
 ## 3. Dependencies
 
-Requires the `isind` function.
+Requires the `isimage` and `isind` function.
 
 ---
 
@@ -126,7 +126,7 @@ Verifies that an error is raised when an indexed image contains values that exce
 
 ```scilab
 try
-    img_large_idx = [1000, 2000]; // Exceeds uint8 upper bound capacity limit (255)
+    img_large_idx = [1000, 2000];
     res = imcast(img_large_idx, "uint8", "indexed");
     mprintf("No error raised\n");
 catch

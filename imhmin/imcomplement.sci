@@ -7,7 +7,7 @@ function B = imcomplement(A)
   end
 
   select type(A)
-    
+
     case 4 then
       B = ~A;
 
@@ -16,27 +16,27 @@ function B = imcomplement(A)
 
     case 8 then
       integer_type = inttype(A);
-      
+
       select integer_type
-          
+
         case 11 then
           B = uint8(255) - A;
-          
+
         case 12 then
           B = uint16(65535) - A;
-          
+
         case 14 then
           B = uint32(4294967295) - A;
-          
+
         case 1 then
-          B = bitnot(A);
-          
+          B = bitcmp(A);
+
         case 2 then
-          B = bitnot(A);
-          
+          B = bitcmp(A);
+
         case 4 then
-          B = bitnot(A);
-          
+          B = bitcmp(A);
+
         else
           error("imcomplement: Unsupported integer type class.");
       end

@@ -23,11 +23,6 @@ B = imcomplement(A)
 | `A` | Matrix | ✓ | The source image matrix. Can be floating-point double precision, boolean, or integer arrays (`uint8`, `uint16`, `int8`, `int16`). |
 | `B` | Matrix | — | Output. The inverted complement matrix matching the exact class size and variable type of input `A`. |
 
-### Behavior by Data Type:
-1. Boolean / Logical: Evaluates as element-wise inversion (`~A`). True values become False, and vice-versa.
-2. Floating-Point (`double`): Scales linearly against a unitary threshold: $B = 1.0 - A$.
-3. Unsigned Integers (`uint8`, `uint16`): Subtracts pixel values from the absolute maximum bit boundary of that class type (e.g., $255 - A$ for `uint8`).
-4. Signed Integers (`int8`, `int16`): Computes the bitwise complement using `bitnot(A)`.
 ---
 
 ## 4. Test Cases
@@ -91,3 +86,56 @@ disp(res);
 255  200
 55   0
 ```
+
+---
+
+### TC-04 — Integer Bit-Bound Saturation (`uint16`)
+
+Verifies that the unsigned-integer subtraction branch scales correctly to a wider class boundary (65535), not just `uint8`.
+
+```scilab
+ui16_mat = uint16([0, 1000; 40000, 65535]);
+res = imcomplement(ui16_mat);
+disp(res);
+```
+
+**Expected output:**
+```scilab
+65535  64535
+25535  0
+```
+
+---
+
+### TC-05 — Signed Integer Two's-Complement Bitwise Flip (`int16`)
+
+Verifies that signed integer classes use a true bitwise complement (`bitcmp`) rather than a maximum-value subtraction, since `~5` in two's complement equals `-6`, not `32767 - 5`.
+
+```scilab
+i16_mat = int16([0, 5; -5, 100]);
+res = imcomplement(i16_mat);
+disp(res);
+```
+
+**Expected output:**
+```scilab
+-1    -6
+4     -101
+```
+
+---
+
+### TC-06 — Rejecting an Unsupported Input Type
+
+Verifies that a non-numeric, non-logical input (e.g. a string matrix) is correctly rejected rather than silently processed.
+
+```scilab
+try
+    res = imcomplement("hello");
+    mprintf("No error raised\n");
+catch
+    mprintf("Error raised correctly\n");
+end
+```
+
+**Expected output:** `Error raised correctly`

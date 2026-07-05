@@ -44,7 +44,6 @@ function peaks = houghpeaks(H, varargin)
         nhoodsize = max(nhoodsize, 3);
     end
 
-    // 6. Validate all parameters
     if ~isimage(H) | ndims(H) ~= 2 then
         error("houghpeaks: H must be a numeric 2D array");
     end

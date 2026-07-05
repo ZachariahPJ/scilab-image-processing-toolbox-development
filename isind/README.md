@@ -16,7 +16,13 @@ bool = isind(img)
 
 ---
 
-## 3. Parameters
+## 3. Dependencies
+
+Requires the `isimage` function.
+
+---
+
+## 4. Parameters
 
 | Parameter | Type | Required | Description |
 | :--- | :--- | :---: | :--- |
@@ -25,7 +31,7 @@ bool = isind(img)
 
 ---
 
-## 4. Test Cases
+## 5. Test Cases
 
 The following 7 test cases cover output verification, data class handling, boundary validations, and error conditions. Load the function file before running:
 

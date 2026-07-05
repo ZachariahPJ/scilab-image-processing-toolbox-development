@@ -125,3 +125,96 @@ T F F
 F T F
 F F T
 ```
+---
+
+### TC-04 — Binary Spiral Propagation
+
+Verifies that a single seed at one end of a connected corridor floods the entire corridor via the propagation queue, including a dead-end tail that cannot be reached by a single raster or antiraster pass alone — this specifically exercises the FIFO propagation step, not just the two-pass scan.
+
+```scilab
+mask_spiral   = [%t, %t, %t, %t, %t;
+                  %f, %f, %f, %f, %t;
+                  %t, %t, %t, %f, %t;
+                  %t, %f, %f, %f, %t;
+                  %t, %t, %t, %t, %t];
+
+marker_spiral = [%t, %f, %f, %f, %f;
+                  %f, %f, %f, %f, %f;
+                  %f, %f, %f, %f, %f;
+                  %f, %f, %f, %f, %f;
+                  %f, %f, %f, %f, %f];
+
+res = imreconstruct(marker_spiral, mask_spiral);
+disp(res);
+```
+
+**Expected output(`res`):**
+```scilab
+T T T T T
+F F F F T
+T T T F T
+T F F F T
+T T T T T
+```
+---
+
+### TC-05 — Grayscale Spiral Propagation
+
+Verifies that the propagation step correctly raises grayscale values (not just booleans) along a corridor that requires multiple direction reversals to fully traverse.
+
+```scilab
+mask_gray_spiral   = [50, 50, 50, 50, 50;
+                       10, 10, 10, 10, 50;
+                       50, 50, 50, 10, 50;
+                       50, 10, 10, 10, 50;
+                       50, 50, 50, 50, 50];
+
+marker_gray_spiral = [50, 10, 10, 10, 10;
+                       10, 10, 10, 10, 10;
+                       10, 10, 10, 10, 10;
+                       10, 10, 10, 10, 10;
+                       10, 10, 10, 10, 10];
+
+res = imreconstruct(marker_gray_spiral, mask_gray_spiral);
+disp(res);
+```
+
+**Expected output(`res`):**
+```scilab
+50. 50. 50. 50. 50.
+10. 10. 10. 10. 50.
+50. 50. 50. 10. 50.
+50. 10. 10. 10. 50.
+50. 50. 50. 50. 50.
+```
+---
+
+### TC-06 — Disconnected Region Isolation
+
+Verifies that reconstruction only grows the mask component actually connected to the marker, leaving a disconnected foreground region untouched — the output should differ from both `marker` (which under-fills the seed's own component) and `mask` (whose second blob never gets reached).
+
+```scilab
+mask_two_blobs   = [%t, %t, %f, %t, %t;
+                     %t, %t, %f, %t, %t;
+                     %f, %f, %f, %f, %f;
+                     %t, %t, %f, %t, %t;
+                     %t, %t, %f, %t, %t];
+
+marker_one_seed  = [%t, %f, %f, %f, %f;
+                     %f, %f, %f, %f, %f;
+                     %f, %f, %f, %f, %f;
+                     %f, %f, %f, %f, %f;
+                     %f, %f, %f, %f, %f];
+
+res = imreconstruct(marker_one_seed, mask_two_blobs);
+disp(res);
+```
+
+**Expected output(`res`):**
+```scilab
+T T F F F
+T T F F F
+F F F F F
+F F F F F
+F F F F F
+```

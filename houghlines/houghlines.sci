@@ -1,18 +1,15 @@
 function lines = houghlines(BW, theta, rho, peaks, varargin)
     
-    // 1. Argument count check
     rhs = argn(2);
     if rhs < 4 | rhs > 8 | rhs == 5 | rhs == 7 then
         error("houghlines: requires 4, 6, or 8 input arguments");
     end
 
-    // 2. Initialise optional parameters as empty
     fillgap = [];
     minlength = [];
 
     n_args = length(varargin);
 
-    // 3. Parse property/value pairs safely using direct varargin loop
     for n = 1:2:n_args
         prop_str = convstr(varargin(n), "l");
 
@@ -26,7 +23,6 @@ function lines = houghlines(BW, theta, rho, peaks, varargin)
         end
     end
 
-    // 4. Apply defaults
     if isempty(fillgap) then
         fillgap = 20;
     end
@@ -34,7 +30,6 @@ function lines = houghlines(BW, theta, rho, peaks, varargin)
         minlength = 40;
     end
 
-    // 5. Validate all inputs (Correction: using isimage and isnumeric)
     if ~isimage(BW) | (ndims(BW) ~= 2) then
         error("houghlines: BW must be a logical or numeric 2D array");
     end
@@ -60,12 +55,10 @@ function lines = houghlines(BW, theta, rho, peaks, varargin)
         error("houghlines: MINLENGTH must be a positive scalar number");
     end
 
-    // 6. Initialise structural output to handle multi-index arrays dynamically
     lines = struct();
     numpeaks = size(peaks, 1);
     numlines = 0;
 
-    // 7. Find all foreground pixels 
     [allpixels_r, allpixels_c] = find(BW);
     if isempty(allpixels_r) then
         return;
@@ -75,7 +68,6 @@ function lines = houghlines(BW, theta, rho, peaks, varargin)
     allpixels_x = allpixels_c - origin(1);
     allpixels_y = allpixels_r - origin(2);
 
-    // 8. Process each Hough peak individually
     for n = 1:numpeaks
         rho_p_idx = peaks(n, 1);
         theta_p_idx = peaks(n, 2);

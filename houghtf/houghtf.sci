@@ -1,23 +1,19 @@
 function [accum, R] = houghtf(bw, varargin)
     
-    // 1. Argument count check
     rhs = argn(2);
     if rhs == 0 then
         error("houghtf: BW argument is required");
     end
 
-    // 2. Input dimension validation
     if ndims(bw) ~= 2 then
         error("houghtf: BW must be a 2-dimensional matrix");
     end
-    
-    // 3. Parse method string and collect remaining arguments
+
     method = "line";
     args = list();
 
     if rhs > 1 then
         first_arg = varargin(1);
-        // Ensure it is a valid scalar string command block before assigning as a method
         if type(first_arg) == 10 & isscalar(first_arg) then
             method = first_arg;
             for i = 2:length(varargin)
@@ -30,10 +26,8 @@ function [accum, R] = houghtf(bw, varargin)
         end
     end
 
-    // 4. Initialise secondary output vector
     R = [];
 
-    // 5. Route to the correct degree-synchronized backend
     select convstr(method, "l")
 
     case "line"

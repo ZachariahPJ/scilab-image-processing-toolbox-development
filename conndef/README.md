@@ -96,7 +96,6 @@ Verifies that a 3-D volumetric minimal neighborhood generates a $3 \times 3 \tim
 
 ```scilab
 res = conndef(3, "minimal");
-// Displaying the middle slice (Slice 2) along the third dimension
 disp(res(:,:,2));
 ```
 
@@ -115,7 +114,6 @@ Verifies the creation of the specialized 3D 18-connectivity neighborhood envelop
 
 ```scilab
 res = conndef(18);
-// Display the first structural slice of the 3D block
 disp(res(:,:,1));
 ```
 
@@ -152,6 +150,120 @@ Verifies that input sanitizers block unrecognized string arguments passed into t
 ```scilab
 try
     res = conndef(2, "corrupt_type_string");
+    mprintf("No error raised\n");
+catch
+    mprintf("Error raised correctly\n");
+end
+```
+
+**Expected output:** `Error raised correctly`
+
+---
+
+### TC-08 — 1-D "minimal"/"maximal" Edge Case
+
+Verifies the single-dimension edge case reshapes correctly into a column vector rather than erroring, since Scilab's reshape requires at least two dimensions internally.
+
+```scilab
+res_min = conndef(1, "minimal");
+res_max = conndef(1, "maximal");
+disp(res_min);
+disp(res_max);
+```
+
+**Expected output(`res_min`):**
+```scilab
+1.
+1.
+1.
+```
+
+**Expected output(`res_max`):**
+```scilab
+1.
+1.
+1.
+```
+
+---
+
+### TC-09 — Accepting a Valid Connectivity Matrix Directly
+
+Verifies that passing an already-built connectivity matrix (rather than a dimension count and type string) is validated and returned as-is, exercising the center-element and symmetry checks on a matrix known to be valid.
+
+```scilab
+conn_in = [0 1 0; 1 1 1; 0 1 0];
+res = conndef(conn_in);
+disp(res);
+```
+
+**Expected output:**
+```scilab
+0   1   0
+1   1   1
+0   1   0
+```
+
+---
+
+### TC-10 — Rejecting a Matrix Not Symmetric About Its Center
+
+Verifies that a connectivity matrix which is not point-symmetric about its center element is correctly rejected rather than silently accepted.
+
+```scilab
+try
+    res = conndef([0 1 1; 1 1 1; 1 1 1]);
+    mprintf("No error raised\n");
+catch
+    mprintf("Error raised correctly\n");
+end
+```
+
+**Expected output:** `Error raised correctly`
+
+---
+
+### TC-11 — Rejecting a Matrix Whose Center Element Is Not 1
+
+Verifies that a connectivity matrix with a valid shape and valid 0/1 values, but a false/zero center element, is correctly rejected.
+
+```scilab
+try
+    res = conndef([1 1 1; 1 0 1; 1 1 1]);
+    mprintf("No error raised\n");
+catch
+    mprintf("Error raised correctly\n");
+end
+```
+
+**Expected output:** `Error raised correctly`
+
+---
+
+### TC-12 — Rejecting a Matrix With Non-Binary Values
+
+Verifies that a connectivity matrix containing a value other than 0 or 1 is correctly rejected.
+
+```scilab
+try
+    res = conndef([1 2 1; 1 1 1; 1 1 1]);
+    mprintf("No error raised\n");
+catch
+    mprintf("Error raised correctly\n");
+end
+```
+
+**Expected output:** `Error raised correctly`
+
+---
+
+### TC-13 — Rejecting an Invalid Scalar Connectivity Code
+
+Verifies that a scalar outside the valid set `{4, 6, 8, 18, 26}` is correctly rejected.
+
+```scilab
+try
+    res = conndef(10);
     mprintf("No error raised\n");
 catch
     mprintf("Error raised correctly\n");

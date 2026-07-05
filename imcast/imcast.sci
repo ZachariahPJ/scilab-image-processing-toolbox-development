@@ -1,11 +1,10 @@
 function imout = imcast(img, outcls, varargin)
     [lhs, rhs] = argn();
 
-    // --- 1. INPUT VALIDATION & ARGUMENT PARSING ---
     if (rhs < 2 || rhs > 3) then
         error("imcast: wrong number of arguments.");
     end
-    
+
     is_indexed_mode = %f;
     if (rhs == 3) then
         param = varargin(1);
@@ -15,17 +14,13 @@ function imout = imcast(img, outcls, varargin)
         is_indexed_mode = %t;
     end
 
-    // Normalize target class string to lowercase
-    outcls = convstr(outcls, "l");
-
-    // Determine the Scilab type of the input image
     incls_type = type(img);
     incls_str = "";
-    
+
     if incls_type == 1 then
-        incls_str = "double"; 
+        incls_str = "double";
     elseif incls_type == 4 then
-        incls_str = "logical"; 
+        incls_str = "logical";
     elseif incls_type == 8 then
         select inttype(img)
         case 11 then incls_str = "uint8";
@@ -38,7 +33,11 @@ function imout = imcast(img, outcls, varargin)
         error("imcast: unknown image class type.");
     end
 
-    // --- 2. INDEXED IMAGES PATH ---
+    if outcls == incls_str then
+        imout = img;
+        return
+    end
+
     if is_indexed_mode then
         if ~isind(img) then
             error("imcast: input should have been an indexed image but it is not.");
@@ -46,7 +45,7 @@ function imout = imcast(img, outcls, varargin)
 
         if (outcls == "single" || outcls == "double") then
             if incls_type == 8 then
-                imout = double(img) + 1; 
+                imout = double(img) + 1;
             else
                 imout = double(img);
             end
@@ -68,9 +67,9 @@ function imout = imcast(img, outcls, varargin)
                 if imax > target_max then
                     error(msprintf("imcast: IMG has too many colours %d for the range of values in %s", imax, outcls));
                 end
-                img = img - 1; 
+                img = img - 1;
             end
-            
+
             select outcls
             case "uint8" then imout = uint8(img);
             case "uint16" then imout = uint16(img);
@@ -78,18 +77,16 @@ function imout = imcast(img, outcls, varargin)
             end
         end
 
-    // --- 3. STANDARD IMAGES PATH ---
     else
         problem = %f;
-        
+
         select incls_str
         case "double" then
             select outcls
             case "uint8" then imout = uint8(round(img * 255));
             case "uint16" then imout = uint16(round(img * 65535));
             case "int16" then imout = int16(round(img * 65535 - 32768));
-            case "double" then imout = double(img);
-            case "single" then imout = double(img); 
+            case "single" then imout = double(img);
             case "logical" then imout = (img <> 0);
             else problem = %t;
             end
@@ -98,7 +95,7 @@ function imout = imcast(img, outcls, varargin)
             select outcls
             case "double" then imout = double(img) / 255;
             case "single" then imout = double(img) / 255;
-            case "uint16" then imout = uint16(img) * 257; 
+            case "uint16" then imout = uint16(img) * 257;
             case "int16" then imout = int16(double(img) * 257 - 32768);
             case "logical" then imout = (img <> 0);
             else problem = %t;
@@ -118,16 +115,16 @@ function imout = imcast(img, outcls, varargin)
             select outcls
             case "double" then imout = double(img);
             case "single" then imout = double(img);
-            case "uint8" then 
-                imout = zeros(img); 
+            case "uint8" then
+                imout = zeros(img);
                 imout(img) = 255;
                 imout = uint8(imout);
-            case "uint16" then 
-                imout = zeros(img); 
+            case "uint16" then
+                imout = zeros(img);
                 imout(img) = 65535;
                 imout = uint16(imout);
-            case "int16" then 
-                imout = ones(img) * -32768; 
+            case "int16" then
+                imout = ones(img) * -32768;
                 imout(img) = 32767;
                 imout = int16(imout);
             else problem = %t;
@@ -143,7 +140,7 @@ function imout = imcast(img, outcls, varargin)
             else problem = %t;
             end
         end
-        
+
         if (problem) then
             error("imcast: unsupported TYPE """ + outcls + """");
         end

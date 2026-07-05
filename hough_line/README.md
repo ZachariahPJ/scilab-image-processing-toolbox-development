@@ -35,7 +35,69 @@ The result is rounded to the nearest integer and used to increment the correspon
 
 ---
 
-## 4. Test Cases
+## 4. Relationship to `hough`
+
+`hough_line` is the low-level engine. It expects angles already converted to radians in Octave convention and performs no argument parsing or validation.
+
+`hough` is the high-level front-end. It handles all argument parsing, property/value pairs, and angle unit conversion before passing the prepared inputs to `hough_line`.
+
+```
+User calls hough()
+    │
+    ├── validates bw
+    ├── parses ThetaResolution / Theta / RhoResolution
+    ├── converts theta: (-theta + 90) * (pi/180)
+    │
+    └── calls hough_line(bw, theta_oct)
+            │
+            ├── builds rho axis
+            ├── finds foreground pixels with find()
+            ├── precomputes cos and sin
+            └── runs accumulator voting loop
+                    │
+                    └── returns [H, rho]
+```
+
+If you already have angles in radians in Octave convention, `hough_line` can be called directly without going through `hough`.
+
+---
+
+## 5. Example Usage
+
+```scilab
+// Create a simple 5x5 diagonal line matrix
+bw = [1 0 0 0 0;
+      0 1 0 0 0;
+      0 0 1 0 0;
+      0 0 0 1 0;
+      0 0 0 0 1];
+
+// Define test angles in radians
+theta = [-0.5, 0, 0.5];
+
+// Compute Hough Line accumulator
+[H, rho] = hough_line(bw, theta);
+
+// Display Accumulator Dimensions (Expect 1x13 for a 5x5 image)
+disp("Rho vector size:");
+disp(size(rho));
+```
+
+**Expected output:**
+```
+1.   13.
+
+0.   0.   0.
+0.   0.   0.
+2.   1.   1.
+2.   1.   1.
+1.   1.   0.
+0.   1.   1.
+```
+
+---
+
+## 6. Test Cases
 
 The following 5 test cases cover accumulator dimensions, geometric correctness, and edge inputs. Load the function before running:
 

@@ -27,7 +27,7 @@ lines = houghlines(BW, theta, rho, peaks, 'FillGap', f, 'MinLength', m)
 ---
 
 ## 3. Dependencies
-Requires the `isimage`, `isnumeric`, `hough`, `hough_line` and `houghpeaks` functions.
+Requires the `isimage`, `isnumeric`, `hough`, `hough_line` and `houghpeaks` function.
 
 ---
 
@@ -134,7 +134,7 @@ Verifies that a short pixel group is excluded when `MinLength` is set above its 
 
 ```scilab
 bw = zeros(50, 50);
-bw(25, 20:25) = 1;   // 6-pixel segment
+bw(25, 20:25) = 1;
 [H, theta, rho] = hough(bw);
 peaks = houghpeaks(H, 1);
 lines = houghlines(bw, theta, rho, peaks, "FillGap", 5, "MinLength", 100);
@@ -176,7 +176,7 @@ Verifies that a larger `FillGap` produces fewer or equal segments than a smaller
 ```scilab
 bw = zeros(101, 101);
 bw(51, 1:40)   = 1;
-bw(51, 45:101) = 1;   // 4-pixel gap
+bw(51, 45:101) = 1;
 [H, theta, rho] = hough(bw);
 peaks = houghpeaks(H, 1);
 lines_merged = houghlines(bw, theta, rho, peaks, "FillGap", 10, "MinLength", 10);

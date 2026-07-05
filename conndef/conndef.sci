@@ -17,28 +17,35 @@ function conn = conndef(varargin)
         end
 
         conntype_l = convstr(conntype, "l");
-        sz = repmat(3, 1, num_dims);
+
+        if num_dims == 1 then
+            sz = [3, 1];
+        else
+            sz = repmat(3, 1, num_dims);
+        end
 
         if conntype_l == "minimal" then
-            
-            sz = repmat(3, 1, num_dims);
-            
+
             dist_matrix = zeros(1, 3^num_dims);
             dist_matrix = matrix(dist_matrix, sz);
-            
+
             for d = 1:num_dims
-                sh = ones(1, num_dims);
-                sh(d) = 3;
+                if num_dims == 1 then
+                    sh = [3, 1];
+                else
+                    sh = ones(1, num_dims);
+                    sh(d) = 3;
+                end
                 grid_d = matrix(1:3, sh);
-                
-                sz_grid = ones(1, num_dims);
+
+                sz_grid = ones(1, length(sz));
                 sz_grid(1:length(size(grid_d))) = size(grid_d);
                 rep_factors = sz ./ sz_grid;
-                
+
                 rep_grid = repmat(grid_d, rep_factors);
                 dist_matrix = dist_matrix + abs(rep_grid - 2);
             end
-            
+
             conn = double(dist_matrix <= 1);
 
         elseif conntype_l == "maximal" then
@@ -54,22 +61,30 @@ function conn = conndef(varargin)
     input_arg = varargin(1);
 
     if ~isscalar(input_arg) then
+        if ~(type(input_arg) == 1 | type(input_arg) == 4) then
+            error("conndef: CONN must either be a logical array or a numeric array.");
+        end
+
         sz_in = size(input_arg);
-        if any(sz_in ~= 3) then
+        if or(sz_in ~= 3) then
             error("conndef: CONN must be a matrix with all dimensions of size 3.");
         end
-        if any(input_arg ~= 0 & input_arg ~= 1) then
+        if or(input_arg ~= 0 & input_arg ~= 1) then
             error("conndef: CONN array elements must be either 0 or 1.");
         end
-        
-        mid_idx = cell(1, length(sz_in));
-        for d = 1:length(sz_in)
-            mid_idx(d).entries = 2;
-        end
-        if input_arg(mid_idx(:)) ~= 1 then
+
+        n_dims_in = length(sz_in);
+        input_flat = matrix(double(input_arg), 1, 3^n_dims_in);
+
+        mid_linear = (3^n_dims_in + 1) / 2;
+        if input_flat(mid_linear) ~= 1 then
             error("conndef: CONN center element must be 1.");
         end
-        
+
+        if or(input_flat ~= input_flat($:-1:1)) then
+            error("conndef: CONN is not symmetric relative to its center.");
+        end
+
         conn = double(input_arg);
         return;
     end
