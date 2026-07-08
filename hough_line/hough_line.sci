@@ -40,7 +40,7 @@ function [J, bins] = hough_line(I, thetas)
         bin_idx = (rho - bins(1)) + 1; 
 
         for i = 1:thetas_length
-            if (bin_idx(i) >= 1) & (bin_idx(i) <= bins_length) then
+            if (bin_idx(i) > 1) & (bin_idx(i) <= bins_length) then
                 J(bin_idx(i), i) = J(bin_idx(i), i) + 1;
             end
         end
