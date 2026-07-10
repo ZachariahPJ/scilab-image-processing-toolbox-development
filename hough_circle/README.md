@@ -40,6 +40,8 @@ The following 12 test cases cover accumulator dimensions, geometric correctness,
 exec('hough_circle.sci', -1)
 ```
 
+**Note on Octave equivalents:** `circle` is a local/private subfunction defined inside `hough_circle.sci` (or `hough_circle.m` in Octave) — it is only visible within that file, and Octave does not expose it as a standalone callable function the way Scilab does after `exec`-ing the file. For any test case that needs to call `circle` directly (TC-03, TC-04, TC-05), the Octave equivalent requires a **separately defined helper function**, `local_circle`, added to the Octave test script. This helper reconstructs the same mask-building formula used inside the ported subfunction, purely so the test can independently verify vote counts — it is **not** a call into Octave's actual internal circle-building code, since that code isn't reachable from outside the file in either language. Treat any test using `local_circle` as a structural self-consistency check on the Scilab port's own formula, not as direct proof that it matches Octave's real internal implementation byte-for-byte.
+
 ---
 
 ### TC-01 — Output Dimensions for a Scalar Radius
@@ -95,6 +97,26 @@ disp(nnz(accum(:,:,1)) == nnz(circ_ref));
 
 **Expected output:** `T`
 
+**Octave equivalent:**
+```matlab
+function circ = local_circle(r)
+  circ = zeros(round(2*r + 1), round(2*r + 1));
+  col = 1:size(circ, 2);
+  for row = 1:size(circ, 1)
+    tmp = (row - (r+1)).^2 + (col - (r+1)).^2;
+    circ(row, col) = (tmp <= r^2);
+  end
+  circ = bwmorph(circ, "remove");
+end
+
+bw = zeros(21, 21);
+bw(11, 11) = 1;
+r = 5;
+accum = hough_circle(bw, r);
+circ_ref = local_circle(r);
+disp(nnz(accum(:,:,1)) == nnz(circ_ref));
+```
+
 ---
 
 ### TC-04 — Independent Radius Layers
@@ -114,6 +136,18 @@ disp(nnz(accum(:,:,2)) == nnz(c8));
 
 **Expected output:** `T` and `T`
 
+**Octave equivalent:**
+```matlab
+bw = zeros(31, 31);
+bw(16, 16) = 1;
+r = [4 8];
+accum = hough_circle(bw, r);
+c4 = local_circle(4);
+c8 = local_circle(8);
+disp(nnz(accum(:,:,1)) == nnz(c4));
+disp(nnz(accum(:,:,2)) == nnz(c8));
+```
+
 ---
 
 ### TC-05 — Additive Accumulation for Two Non-Overlapping Points
@@ -132,6 +166,18 @@ disp(total_votes == expected_votes);
 ```
 
 **Expected output:** `T`
+
+**Octave equivalent:**
+```matlab
+bw = zeros(41, 41);
+bw(10, 10) = 1;
+bw(30, 30) = 1;
+r = 5;
+accum = hough_circle(bw, r);
+total_votes = sum(sum(accum(:,:,1)));
+expected_votes = 2 * nnz(local_circle(5));
+disp(total_votes == expected_votes);
+```
 
 ---
 
