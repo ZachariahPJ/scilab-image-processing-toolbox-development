@@ -1,13 +1,14 @@
 function peaks = houghpeaks(H, varargin)
 
-    rhs = argn(2);
-    if (rhs < 1) | (rhs > 6) then
-        error("houghpeaks: requires between 1 and 6 input arguments");
-    end
-
     numpeaks = [];
     threshold = [];
     nhoodsize = [];
+    
+    rhs = argn(2);
+    
+    if (rhs < 1) | (rhs > 6) then
+        error("houghpeaks: requires between 1 and 6 input arguments");
+    end
 
     n_args = length(varargin);
 
