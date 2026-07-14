@@ -18,7 +18,7 @@ bool = isind(img)
 
 ## 3. Dependencies
 
-Requires the `isimage` function.
+Requires the `isimage` and `isindex` function.
 
 ---
 
