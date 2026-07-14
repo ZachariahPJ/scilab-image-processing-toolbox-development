@@ -23,7 +23,7 @@ imout = im2single(img, 'indexed')
 
 ## 3. Dependencies
 
-Requires the `isimage`, `isind` and `imcast` functions.
+Requires the `isimage`, `isindex`, `isind`, `intmin`, `intmax` and `imcast` functions.
 
 ---
 
