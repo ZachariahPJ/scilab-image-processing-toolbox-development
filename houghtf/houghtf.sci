@@ -1,5 +1,5 @@
 function [accum, R] = houghtf(bw, varargin)
-
+    
   method = "line";
   args = list();
 
@@ -16,18 +16,32 @@ function [accum, R] = houghtf(bw, varargin)
   if (nargin > 1) then
     if (type(varargin(1)) == 10) then
       method = varargin(1);
-      args = varargin(2:$);
+      if (length(varargin) > 1) then
+        args = varargin(2:$);
+      else
+        args = list();
+      end
     else
       args = varargin;
     end
   end
 
+  n_args = length(args);
+
   select convstr(method, 'l')
   case "line" then
-    [accum, R] = hough_line(bw, args(:));
+    if n_args == 0 then
+      [accum, R] = hough_line(bw);
+    else
+      [accum, R] = hough_line(bw, args(1));
+    end
   case "circle" then
-    accum = hough_circle(bw, args(:));
+    if n_args == 0 then
+      accum = hough_circle(bw);
+    else
+      accum = hough_circle(bw, args(1));
+    end
   else
-    error("houghtf: unsupported method " + method);
+    error("houghtf: unsupported method '" + method + "'");
   end
 endfunction
