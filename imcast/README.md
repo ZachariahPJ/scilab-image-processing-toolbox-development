@@ -23,7 +23,7 @@ imout = imcast(img, outcls, 'indexed')
 
 ## 3. Dependencies
 
-Requires the `isimage` and `isind` function.
+Requires the `intmax`, `intmin`, `isimage`, `isindex` and `isind` function.
 
 ---
 
