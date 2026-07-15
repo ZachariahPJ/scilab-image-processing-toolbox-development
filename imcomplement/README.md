@@ -16,7 +16,13 @@ B = imcomplement(A)
 
 ---
 
-## 3. Parameters
+## 3. Dependencies
+
+Requires the `class`, `intmax` and `intmin` functions.
+
+---
+
+## 4. Parameters
 
 | Parameter | Type | Required | Description |
 | :--- | :--- | :---: | :--- |
@@ -25,7 +31,7 @@ B = imcomplement(A)
 
 ---
 
-## 4. Test Cases
+## 5. Test Cases
 
 The following test scripts can be executed to validate inversion accuracy across varying data type structures.
 
