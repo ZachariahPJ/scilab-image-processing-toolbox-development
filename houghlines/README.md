@@ -27,7 +27,7 @@ lines = houghlines(BW, theta, rho, peaks, 'FillGap', f, 'MinLength', m)
 ---
 
 ## 3. Dependencies
-Requires the `isimage`, `isnumeric`, `hough`, `hough_line` and `houghpeaks` function.
+Requires the `isimage`, `isnumeric`, `hough`, `hough_line` and `houghpeaks` functions.
 
 ---
 
@@ -49,14 +49,7 @@ Requires the `isimage`, `isnumeric`, `hough`, `hough_line` and `houghpeaks` func
 
 ## 5. Test Cases
 
-The following 16 test cases cover geometric correctness, struct output, parameter effects, and error handling. Load all required files before running:
-
-```scilab
-exec('hough_line.sci', -1)
-exec('hough.sci', -1)
-exec('houghpeaks.sci', -1)
-exec('houghlines.sci', -1)
-```
+The following 16 test cases cover geometric correctness, struct output, parameter effects, and error handling.
 
 ---
 
