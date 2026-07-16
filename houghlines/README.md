@@ -43,8 +43,6 @@ Requires the `isimage`, `isnumeric`, `hough`, `hough_line` and `houghpeaks` func
 | `'MinLength'` | Positive scalar | — | Minimum Euclidean length in pixels for a segment to be kept. **Default: 40.** |
 | `lines` | Struct array | — | **Output.** Each element has fields `point1`, `point2`, `theta`, `rho`. Returns empty struct if no segments qualify. |
 
-> **Note:** The total number of input arguments must be 4, 6, or 8. Passing 5 or 7 arguments raises an error because property names and values must always come in pairs.
-
 ---
 
 ## 5. Test Cases
