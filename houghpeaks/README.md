@@ -23,7 +23,7 @@ peaks = houghpeaks(H, numpeaks, 'Threshold', t, 'NHoodSize', [r, c])
 ---
 
 ## 3. Dependencies
-Requires the `isimage`, `isnumeric`, `hough` and `hough_line` function.
+Requires the `isimage`, `isnumeric`, `hough` and `hough_line` functions.
 
 ---
 
@@ -34,20 +34,14 @@ Requires the `isimage`, `isnumeric`, `hough` and `hough_line` function.
 | `H` | Numeric 2-D matrix | ✓ | Hough accumulator returned by `hough`. Rows correspond to rho, columns to theta. |
 | `numpeaks` | Positive integer scalar | — | Maximum number of peaks to return. **Default: 1.** |
 | `'Threshold'` | Non-negative scalar | — | Minimum accumulator value for a peak to be accepted. **Default: `0.5 * max(H(:))`.** |
-| `'NHoodSize'` | `1×2` vector of positive odd integers | — | Size of the neighbourhood zeroed around each detected peak. **Default: computed from `size(H)/50`, rounded up to nearest odd integer, minimum `[3,3]`.** |
+| `'NHoodSize'` | `1×2` vector of positive odd integers | — | Size of the neighbourhood zeroed around each detected peak. **Default: computed from `size(H)/50`, rounded up to the nearest odd integer, minimum `[3,3]`.** |
 | `peaks` | Integer matrix (`P×2`) | — | **Output.** Each row is `[rho_index, theta_index]`. `P ≤ numpeaks`. Returns `[]` if no peaks pass the threshold. |
 
 ---
 
 ## 5. Test Cases
 
-The following 15 test cases cover default behaviour, property handling, geometric correctness, and error conditions. Load the required files before running:
-
-```scilab
-exec('hough_line.sci', -1)
-exec('hough.sci', -1)
-exec('houghpeaks.sci', -1)
-```
+The following 15 test cases cover default behaviour, property handling, geometric correctness, and error conditions.
 
 ---
 
