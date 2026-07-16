@@ -35,10 +35,6 @@ Requires the `connectivity` function.
 
 The following test script file can be used to validate parameter execution paths, multidimensional block assembly, and shape geometries against standard configuration targets.
 
-```scilab
-exec('conndef.sci', -1);
-```
-
 ---
 
 ### TC-01 — 2-D "minimal" (4-Connected Neighborhood Cross)
