@@ -40,12 +40,6 @@ Requires the `isimage`, `isindex`, `isind`, `intmin`, `intmax` and `imcast` func
 
 The following test script validates argument processing, standard intensity scaling, integer mapping translations, and exception intercept boundaries.
 
-```scilab
-exec('isind.sci', -1);
-exec('imcast.sci', -1);
-exec('im2single.sci', -1);
-```
-
 ---
 
 ### TC-01 — Double Floating-Point Passthrough Matrix
