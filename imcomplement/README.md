@@ -33,17 +33,19 @@ Requires the `class`, `intmax` and `intmin` functions.
 
 ## 5. Test Cases
 
-The following test scripts can be executed to validate inversion accuracy across varying data type structures.
-
-```scilab
-exec('imcomplement.sci', -1);
-```
+The following test scripts can be executed to validate inversion accuracy across different data-type structures.
 
 ---
 
 ### TC-01 — Boolean Logical Inversion
 
 Verifies that boolean array masks are correctly inverted element-by-element.
+
+```scilab
+bool_mat = [%t, %f; %f, %t];
+res = imcomplement(bool_mat);
+disp(res);
+```
 
 **Expected output:** 
 ```scilab
