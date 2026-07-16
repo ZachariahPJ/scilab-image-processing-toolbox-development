@@ -45,12 +45,7 @@ Requires the `hough_line` function.
 
 ## 5. Test Cases
 
-The following 17 test cases cover output dimensions, geometric correctness, property handling, and error conditions. Load both files before running:
-
-```scilab
-exec('hough_line.sci', -1)
-exec('hough.sci', -1)
-```
+The following 17 test cases cover output dimensions, geometric correctness, property handling, and error conditions.
 
 ---
 
