@@ -45,12 +45,6 @@ exec('imcomplement.sci', -1);
 
 Verifies that boolean array masks are correctly inverted element-by-element.
 
-```scilab
-bool_mat = [%t, %f; %f, %t];
-res = imcomplement(bool_mat);
-disp(res);
-```
-
 **Expected output:** 
 ```scilab
 F T
