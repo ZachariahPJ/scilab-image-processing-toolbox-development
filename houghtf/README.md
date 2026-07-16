@@ -47,14 +47,6 @@ Requires the `hough_line`, `hough_circle` and `bwmorph` functions.
 
 ## 5. Test Cases
 
-```scilab
-exec('hough_line.sci', -1);
-exec('hough_circle.sci', -1);
-exec('houghtf.sci', -1);
-```
-
----
-
 ### TC-01 — Explicit "line" Method with Custom Thetas
 
 Verifies accumulator values for a single-point image against hand-computed `rho`/bin values.
