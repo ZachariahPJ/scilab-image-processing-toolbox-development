@@ -34,11 +34,7 @@ Requires the `bwmorph` function.
 
 ## 5. Test Cases
 
-The following 12 test cases cover accumulator dimensions, geometric correctness, edge inputs, and error handling. Load the function before running:
-
-```scilab
-exec('hough_circle.sci', -1)
-```
+The following 12 test cases cover accumulator dimensions, geometric correctness, edge inputs, and error handling.
 
 **Note on Octave equivalents:** `circle` is a local/private subfunction defined inside `hough_circle.sci` (or `hough_circle.m` in Octave) — it is only visible within that file, and Octave does not expose it as a standalone callable function the way Scilab does after `exec`-ing the file. For any test case that needs to call `circle` directly (TC-03, TC-04, TC-05), the Octave equivalent requires a **separately defined helper function**, `local_circle`, added to the Octave test script. This helper reconstructs the same mask-building formula used inside the ported subfunction, purely so the test can independently verify vote counts — it is **not** a call into Octave's actual internal circle-building code, since that code isn't reachable from outside the file in either language. Treat any test using `local_circle` as a structural self-consistency check on the Scilab port's own formula, not as direct proof that it matches Octave's real internal implementation byte-for-byte.
 
