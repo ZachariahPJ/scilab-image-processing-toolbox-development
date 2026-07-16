@@ -33,14 +33,6 @@ Requires the `isimage` and `isindex` function.
 
 ## 5. Test Cases
 
-The following 7 test cases cover output verification, data class handling, boundary validations, and error conditions. Load the function file before running:
-
-```scilab
-exec('isind.sci', -1)
-```
-
----
-
 ### TC-01 — Valid uint8 Array Grid
 
 Verifies that an unsigned 8-bit integer matrix is correctly validated as an indexed image.
