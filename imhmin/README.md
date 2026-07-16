@@ -35,8 +35,6 @@ Requires the `class`, `conndef`, `connectivity`, `imcomplement`, `imreconstruct`
 
 ## 5. Test Cases
 
----
-
 ### TC-01 — Partial Valley Filling
 
 Verifies that when a local valley's depth is less than the threshold $h$, it is raised by exactly $h$, without disturbing the surrounding topology.
