@@ -35,10 +35,6 @@ Requires the `imreconstruct`, `conndef`, `connectivity`, `isnumeric` and `iptche
 
 ## 5. Test Cases
 
-The following test scripts can be executed to validate height threshold suppression behavior.
-
----
-
 ### TC-01 — Partial Peak Shaving
 
 Verifies that when a local peak height exceeds the threshold $h$, its top is shaved off flat down to the level $I_{\text{max}} - h$, creating an intensity plateau above the surrounding background.
