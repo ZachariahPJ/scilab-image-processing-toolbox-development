@@ -35,8 +35,6 @@ Requires the `class`, `intmax` and `intmin` functions.
 
 The following test scripts can be executed to validate inversion accuracy across different data-type structures.
 
----
-
 ### TC-01 — Boolean Logical Inversion
 
 Verifies that boolean array masks are correctly inverted element-by-element.
