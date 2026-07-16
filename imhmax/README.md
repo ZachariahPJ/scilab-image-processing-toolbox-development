@@ -37,12 +37,6 @@ Requires the `imreconstruct`, `conndef`, `connectivity`, `isnumeric` and `iptche
 
 The following test scripts can be executed to validate height threshold suppression behavior.
 
-```scilab
-exec('conndef.sci', -1);
-exec('imreconstruct.sci', -1);
-exec('imhmax.sci', -1);
-```
-
 ---
 
 ### TC-01 — Partial Peak Shaving
