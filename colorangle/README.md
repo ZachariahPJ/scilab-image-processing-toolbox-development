@@ -24,7 +24,7 @@ angles = colorangle(rgb1, rgb2)
 
 ## 4. Test Cases
 
-The following 6 test cases cover geometric correctness, broadcasting, edge inputs, and error handling. Run them after loading the function with `exec('colorangle.sci', -1)`.
+The following 6 test cases cover geometric correctness, broadcasting, edge inputs, and error handling.
 
 ---
 
