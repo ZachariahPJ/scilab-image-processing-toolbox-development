@@ -35,8 +35,6 @@ Requires the `class`, `conndef`, `connectivity`, `imcomplement`, `imreconstruct`
 
 ## 5. Test Cases
 
-The following test scripts can be executed to validate valley threshold filling behavior.
-
 ---
 
 ### TC-01 — Partial Valley Filling
