@@ -23,7 +23,7 @@ imout = imcast(img, outcls, 'indexed')
 
 ## 3. Dependencies
 
-Requires the `intmax`, `intmin`, `isimage`, `isindex` and `isind` function.
+Requires the `intmax`, `intmin`, `isimage`, `isindex` and `isind` functions.
 
 ---
 
@@ -39,12 +39,7 @@ Requires the `intmax`, `intmin`, `isimage`, `isindex` and `isind` function.
 
 ## 5. Test Cases
 
-The following 6 test cases verify standard array normalization, bit depth rescaling, index offsets, and error checking paths. Load both files before running:
-
-```scilab
-exec('isind.sci', -1)
-exec('imcast.sci', -1)
-```
+The following 6 test cases verify standard array normalisation, bit-depth rescaling, index offsets, and error-checking paths.
 
 ---
 
