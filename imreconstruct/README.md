@@ -34,14 +34,6 @@ Requires the `conndef` and `connectivity` functions.
 
 ## 5. Test Cases
 
-The following test scripts can be executed to validate geodesic tracking accuracy across intensity shifts and connectivity splits.
-
-```scilab
-exec('imreconstruct.sci', -1);
-```
-
----
-
 ### TC-01 — Grayscale Peak Suppression (Emulating `imhmax`)
 
 Verifies that clipping a local maximum peak inside a grayscale marker forces the engine to reconstruct a flat intensity plateau bounded precisely by the surrounding slope values of the mask.
