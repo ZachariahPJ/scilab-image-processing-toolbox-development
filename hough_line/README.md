@@ -99,11 +99,7 @@ disp(size(rho));
 
 ## 6. Test Cases
 
-The following 5 test cases cover accumulator dimensions, geometric correctness, and edge inputs. Load the function before running:
-
-```scilab
-exec('hough_line.sci', -1)
-```
+The following 5 test cases cover accumulator dimensions, geometric correctness, and edge inputs.
 
 ---
 
