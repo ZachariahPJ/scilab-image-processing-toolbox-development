@@ -10,10 +10,16 @@ function conn_mask=conndef(varargin)
     else
 
         ndims_raw = varargin(1)
+        is_bool = (typeof(ndims_raw) == "boolean")
 
-        if ~isnumeric(ndims_raw) then
-            error("conndef: octave_base_value::uint_value (): wrong type argument " + "`"+_octave_type_name(ndims_raw)+"`")
+        if ~isnumeric(ndims_raw) & ~is_bool then
+            error("conndef: octave_base_value::uint_value (): wrong type argument " + _octave_type_name(ndims_raw))
         end
+
+        if is_bool then
+            ndims_raw = double(ndims_raw)
+        end
+
         if ~isscalar(ndims_raw) | ~isreal(ndims_raw) then
             error("conndef: NDIMS must be a positive integer")
         end
