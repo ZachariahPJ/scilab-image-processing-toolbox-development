@@ -17,7 +17,7 @@ conn = conndef(type_scalar)
 
 ## 3. Dependencies
 
-Requires the `connectivity` function.
+Requires the `connectivity` and `isnumeric` functions.
 
 ---
 
